@@ -1,0 +1,27 @@
+#!/bin/bash
+#for linux
+#掃描同網段活動主機及其開放端口
+#scan living host and port
+#the firt work in github
+#創建於2023/5/6
+#create by RedCollaredDove
+
+
+
+read -p "input the ip adress-->"  IP_ADRESS                                                               
+nmap -sn $IP_ADRESS/24 | grep 'for' | awk '{print $5}' > living_host.txt
+cat living_host.txt
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
