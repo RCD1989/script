@@ -1,9 +1,9 @@
 #!/bin/bash
 #for linux
 #掃描同網段活動主機及其開放端口
-#scan living host and port
 #the firt work in github
 #創建於2023/5/6
+#會創建"living_host.txt"和"t1.txt"
 #create by RedCollaredDove
 
 
@@ -29,30 +29,16 @@ for line in $(cat living_host.txt)
 
                 if [[ $the_last2_ip != ".1" ]] && [[ $the_last2_ip != ".2" ]] && [[ $the_last3_ip != "254" ]]&& 
                         [[ $line != "$ip_adress" ]];then
-
-
+                        
                         echo -e "++++++++++++++++++++"
                         echo "scanning $line"
                         echo -e "scan port of $line\n\n" >> t1.txt
                         nmap -A -p- $line >> t1.txt
                         echo "done"
                         echo -e "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> t1.txt
-
                 fi
-
         done
 echo "+++++++++++++++++++"
-
-
-
-
-
-
-
-
-
-
-
 
 
 
