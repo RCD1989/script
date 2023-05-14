@@ -3,7 +3,7 @@
 #掃描同網段活動主機及其開放端口
 #the firt work in github
 #創建於2023/5/6
-#會創建"living_host.txt"和"t1.txt"
+#會創建"living_host.txt"和"open_port.txt"
 #create by RedCollaredDove
 
 
@@ -13,9 +13,9 @@ nmap -sn $ip_adress/24 | grep 'for' | awk '{print $5}' > living_host.txt
 
 
 cat living_host.txt
-echo > t1.txt
+echo > open_port.txt
 echo -e "\n"
-echo -e "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> t1.txt
+echo -e "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> open_port.txt
 
 
 for line in $(cat living_host.txt)
@@ -32,10 +32,10 @@ for line in $(cat living_host.txt)
                         
                         echo -e "++++++++++++++++++++"
                         echo "scanning $line"
-                        echo -e "scan port of $line\n\n" >> t1.txt
-                        nmap -A -p- $line >> t1.txt
+                        echo -e "scan port of $line\n\n" >> open_port.txt
+                        nmap -A -p- $line >> open_port.txt
                         echo "done"
-                        echo -e "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> t1.txt
+                        echo -e "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> open_port.txt
                 fi
         done
 echo "+++++++++++++++++++"
