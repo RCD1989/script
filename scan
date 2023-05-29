@@ -1,15 +1,23 @@
 #!/bin/bash
 #for linux
 #掃描同網段活動主機及其開放端口
+#scan living host and port
 #the firt work in github
 #創建於2023/5/6
-#會創建"living_host.txt"和"open_port.txt"
 #create by RedCollaredDove
 
 
 
-read -p "input the ip adress-->"  ip_adress
-nmap -sn $ip_adress/24 | grep 'for' | awk '{print $5}' > living_host.txt
+read -p "input the ip address-->"  ip_address
+
+#如果輸入為空則停止繼續運行
+if [[ -z $ip_address ]];then
+        echo "input can not be empty"
+        echo "exit this script"
+        exit
+fi
+
+nmap -sn $ip_address/24 | grep 'for' | awk '{print $5}' > living_host.txt
 
 
 cat living_host.txt
@@ -28,15 +36,18 @@ for line in $(cat living_host.txt)
 
 
                 if [[ $the_last2_ip != ".1" ]] && [[ $the_last2_ip != ".2" ]] && [[ $the_last3_ip != "254" ]]&& 
-                        [[ $line != "$ip_adress" ]];then
-                        
+                        [[ $line != "$ip_address" ]];then
+
+
                         echo -e "++++++++++++++++++++"
                         echo "scanning $line"
                         echo -e "scan port of $line\n\n" >> open_port.txt
                         nmap -A -p- $line >> open_port.txt
                         echo "done"
                         echo -e "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> open_port.txt
+
                 fi
+
         done
 echo "+++++++++++++++++++"
 
