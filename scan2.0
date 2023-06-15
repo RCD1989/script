@@ -1,1 +1,62 @@
+#!/bin/bash
+#掃描同網段活動主機及其開放端口
+#加強的2.0版本,通過[arp-scan -l]掃描存活主機
+#會創建[living_host.txt]與[open_port.txt]
+#被註釋的地方是1.0版本的內容
+#創建於2023/6/15
+#create by RedCollaredDove
+
+
+:<<!
+read -p "input the ip address-->"  ip_address
+
+#如果輸入為空則停止繼續運行
+if [[ -z $ip_address ]];then
+        echo "input can not be empty"
+        echo "exit this script"
+        exit
+fi
+!
+
+#獲取IP地址
+ip_address=$(arp-scan -l | grep "IPv4" | awk '{print $8}')
+
+
+#獲取存活主機IP
+arp-scan -l | grep "Inc" | awk '{print $1}'> living_host.txt
+
+
+
+cat living_host.txt
+
+echo > open_port.txt
+echo -e "\n"
+echo -e "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> open_port.txt
+
+#逐一掃描所有存活主機的開放端口
+for line in $(cat living_host.txt)
+        do
+                the_last2_ip=${line: -2}
+                the_last3_ip=${line: -3}
+
+
+                if [[ $the_last2_ip != ".1" ]] && [[ $the_last2_ip != ".2" ]] && [[ $the_last3_ip != "254" ]]&& 
+                        [[ $line != "$ip_address" ]];then
+
+
+                        echo -e "++++++++++++++++++++"
+                        echo "scanning $line"
+                        echo -e "scan port of $line\n\n" >> open_port.txt
+                        nmap -A -p- $line >> open_port.txt
+                        echo "done"
+                        echo -e "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> open_port.txt
+
+                fi
+
+        done
+echo "+++++++++++++++++++"
+
+
+
+
 
